@@ -3,15 +3,15 @@ Feature: Test Calculator Division Functionality
 
 Scenario:Division - Two Positive
  Given Calculator app is run
- When I input 2 and 3 to calculator to divide
- Then I get result -1
+ When I input 6 and 2 to calculator to divide
+ Then I get result 3
 
 Scenario:Division - One Negative, One Positive
  Given Calculator app is run
- When I input -2 and 3 to calculator to divide
- Then I get result -5
+ When I input 6 and 3 to calculator to divide
+ Then I get result 2
 
 Scenario:Division - Two Negative
  Given Calculator app is run
- When I input -2 and -3 to calculator to divide
- Then I get result 1
+ When I input 21 and 3 to calculator to divide
+ Then I get result 7
