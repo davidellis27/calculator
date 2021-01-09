@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
 
 import calculator
+import decimal
+from decimal import Decimal
+
 from calculator import add, subtract, multiply, divide
 
 
-def get_integer(prompt):
+def get_decimal(prompt):
     while True:
         number = input(f'{prompt:>22}')
         try:
-            number = int(number)
+            number = Decimal(number)
             break
         except ValueError:
             print("Try integer again")
@@ -38,9 +41,9 @@ operations = {'+' : add,
               '/' : divide,
              } 
 
-number_1  = get_integer("Enter first integer: ")
+number_1  = get_decimal("Enter first integer: ")
 operation = get_operation("Enter operation: ", "+-*/")
-number_2  = get_integer("Enter second integer: ")
+number_2  = get_decimal("Enter second integer: ")
 
 result = operations[operation](number_1, number_2)
 

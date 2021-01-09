@@ -1,13 +1,19 @@
+import decimal
+from decimal import Decimal
+
 def add(a, b):
-    return int(a) + int(b)
+    return float(a) + float(b)
 
 def subtract(a, b):
-    return int(a) - int(b)
+    return Decimal(a) - Decimal(b)
 
 def multiply(a, b):
-    return int(a) * int(b)
+    return float(a) * float(b)
 
 def divide(a, b):
-    return int(a) / int(b)
+    try:
+        return Decimal(a) / Decimal(b)
+    except ZeroDivisionError:
+        return 0
 
 # test 2
