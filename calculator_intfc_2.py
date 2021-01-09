@@ -11,7 +11,7 @@ def get_integer(prompt):
             number = int(number)
             break
         except ValueError:
-            print("Try again")
+            print("Try integer again")
 
     return(number)
 
@@ -21,11 +21,13 @@ def get_operation(prompt, operators):
         operation = input(f'{prompt:>22}')
 
         if len(operation) != 1:
-            print("Try again")
+            print("Try operator again")
             continue 
 
         if operation in operators:
            break
+
+        print("Try operator again")
 
     return(operation)
 
