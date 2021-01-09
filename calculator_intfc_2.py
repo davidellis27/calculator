@@ -35,17 +35,38 @@ def get_operation(prompt, operators):
     return(operation)
 
 
+def prompt_yn(prompt, values):
+    while True:
+        value = input(f'{prompt:>22}')
+
+        if len(value) != 1:
+            print("Try answer again")
+            continue
+
+        if value in values:
+           break
+
+        print("Try answer again")
+
+    return(value)
+
+
 operations = {'+' : add,
               '-' : subtract,
               '*' : multiply,
               '/' : divide,
              } 
 
-number_1  = get_decimal("Enter first integer: ")
-operation = get_operation("Enter operation: ", "+-*/")
-number_2  = get_decimal("Enter second integer: ")
+while True:
+    number_1  = get_decimal("Enter first integer: ")
+    operation = get_operation("Enter operation: ", "+-*/")
+    number_2  = get_decimal("Enter second integer: ")
 
-result = operations[operation](number_1, number_2)
+    result = operations[operation](number_1, number_2)
 
-print(f'{"Result: ":>22}{result}')
+    print(f'{"Result: ":>22}{result}')
 
+    answer = prompt_yn("Do another (y/n):", "yn")
+
+    if answer == 'n':
+        break

@@ -16,4 +16,3 @@ def divide(a, b):
     except ZeroDivisionError:
         return 0
 
-# test 2
