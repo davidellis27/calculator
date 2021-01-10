@@ -1,5 +1,6 @@
-from behave import given, when, then
+from behave import when
 from calculator import subtract
+
 
 @when('I input {a} and {b} to calculator to subtract')
 def step_impl(context, a, b):
