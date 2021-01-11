@@ -27,3 +27,52 @@ def db_postgresql_connect():
         return -1
 
     return conn
+
+
+def db_postgresql_select(db_conn, the_select):
+    cur = db_conn.cursor()
+
+    try:
+        cur.execute(the_select)
+    except psycopg2.Error as error:
+        print(error)
+
+    rows = cur.fetchall()
+    rowcount = cur.rowcount
+    db_conn.commit()
+    cur.close()
+
+    if rowcount == 0:
+        return None
+    else:
+        return rows
+
+
+def db_postgresql_update(db_conn, the_update):
+    cur = db_conn.cursor()
+
+    try:
+        cur.execute(the_update)
+    except psycopg2.Error as error:
+        print(error)
+
+    rowcount = cur.rowcount
+    db_conn.commit()
+    cur.close()
+
+    return rowcount
+
+
+def db_postgresql_insert(db_conn, the_insert):
+    cur = db_conn.cursor()
+
+    try:
+        cur.execute(the_insert)
+    except psycopg2.Error as error:
+        print(error)
+
+    rowcount = cur.rowcount
+    db_conn.commit()
+    cur.close()
+
+    return rowcount

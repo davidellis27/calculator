@@ -4,8 +4,8 @@ import decimal
 from decimal import Decimal
 from calculator import add, subtract, multiply, divide
 import array as arr
-from calculator_db_funcs_postgresql import db_postgresql_connect
-import psycopg2
+from calculator_db_funcs_postgresql import db_postgresql_connect, db_postgresql_select, \
+    db_postgresql_update, db_postgresql_insert
 
 
 def get_decimal(prompt):
@@ -36,7 +36,7 @@ def get_operation(prompt, operators):
     return operator
 
 
-def prompt_yn(prompt, values):
+def prompt_single(prompt, values):
     while True:
         value = input(f'{prompt:>22}')
 
@@ -70,20 +70,34 @@ operations_index = {'+': 0,
 
 db_conn = db_postgresql_connect()
 
-name = input(f'{"Enter name: ":>22}')
+while True:
+    name = input(f'{"Enter name: ":>22}')
 
-cur = db_conn.cursor()
-the_sql = "SELECT addition, subtraction, multiplication, division FROM calculator WHERE user_name = '" + name + "';"
-try:
-    cur.execute(the_sql)
-except psycopg2.Error as error:
-    print(error)
-rows = cur.fetchall()
-db_conn.commit()
+    the_sql = "SELECT addition, subtraction, multiplication, division FROM calculator WHERE user_name = '" + name + "';"
+    rows = db_postgresql_select(db_conn, the_sql)
 
+    if not rows:
+        print("I've not seen {} before".format(name))
 
-for x in range(4):
-    operations_array_total[x-1] = rows[0][x-1]
+        answer = prompt_single("Is that name correct? (y/n):", "yn")
+
+        if answer == 'y':
+            the_sql = "INSERT INTO calculator(user_name) " \
+                      "VALUES('" + name + "') " \
+                      "RETURNING addition, subtraction, multiplication, division"
+            rows = db_postgresql_insert(db_conn, the_sql)
+
+            if rows:
+                break
+            else:
+                print("Something went wrong very wrong.")
+                break
+        else:
+            pass
+    else:
+        for x in range(4):
+            operations_array_total[x-1] = rows[0][x-1]
+        break
 
 print("Name: " + name
       + ", Add: " + str(operations_array_total[0])
@@ -107,7 +121,7 @@ while True:
 
     print(f'{"Result: ":>22}{result}')
 
-    answer = prompt_yn("Do another (y/n):", "yn")
+    answer = prompt_single("Do another (y/n):", "yn")
 
     if answer == 'n':
         break
@@ -130,16 +144,16 @@ print("Name: " + name
       + ", Mult: " + str(operations_array_total[2])
       + ", Div: " + str(operations_array_total[3]))
 
-cur = db_conn.cursor()
 
 the_sql = "UPDATE calculator SET addition = addition + " + str(operations_array_session[0]) \
           + ", subtraction = subtraction + " + str(operations_array_session[1]) \
           + ", multiplication = multiplication + " + str(operations_array_session[2]) \
           + ", division = division + " + str(operations_array_session[3]) + ";"
+rowcount = db_postgresql_update(db_conn, the_sql)
 
-cur.execute(the_sql)
-db_conn.commit()
-cur.close()
+if not rowcount:
+    print("nothing updated")
+
 
 # Close postgesql database connection
 db_conn.close()
