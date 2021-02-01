@@ -5,8 +5,8 @@ import dash_core_components as dcc
 import dash_html_components as html
 
 import flask
-import pandas as pd
-import time
+# import pandas as pd
+# import time
 import os
 
 server = flask.Flask('app')
@@ -15,7 +15,7 @@ server.secret_key = os.environ.get('secret_key', 'secret')
 app = dash.Dash('app', server=server)
 
 
-#df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/hello-world-stock.csv')
+# df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/hello-world-stock.csv')
 
 app.layout = html.Div(children=[
     html.H1(children='Hello Dash'),
