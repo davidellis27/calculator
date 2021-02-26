@@ -17,12 +17,12 @@ app = dash.Dash('app', server=server)
 
 # df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/hello-world-stock.csv')
 
-app.layout = html.Div(children=[
+first_chart = html.Div(children=[
     html.H1(children='Hello Dash'),
     html.Div(children='''Mares eat oats and does eat oats, but little lambs eat ivy.'''),
 
     dcc.Graph(
-        id='example-graph',
+        id='example-graph-1',
         figure={
             'data': [
                 {'x': [1, 2, 3], 'y': [4, 1, 2], 'type': 'bar', 'name': u'Thing 1'},
@@ -41,7 +41,9 @@ app.layout = html.Div([
     html.H1(children='Hello Calculator'),
     html.P(children='''Mares eat oats and does eat oats, but little lambs eat ivy.'''),
 
-    html.Label('Dropdown'),
+    first_chart,
+
+    html.Label(children='Dropdown'),
     dcc.Dropdown(
         options=[
             {'label': 'New York City', 'value': 'NYC'},
@@ -104,8 +106,20 @@ app.layout = html.Div([
                 'title': 'Dash Data Visualization'
             }
         }
-    )
+    ),
 
+    dcc.Graph(
+                figure={
+                    "data": [
+                        {
+                            "x": [1, 2, 3],
+                            "y": [4, 1, 2],
+                            "type": "lines",
+                        },
+                    ],
+                    "layout": {"title": "Avocados Sold"},
+                },
+            )
 
 ], style={'columnCount': 1})
 
