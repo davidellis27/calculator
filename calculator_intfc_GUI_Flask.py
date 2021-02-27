@@ -5,16 +5,26 @@ from flask import Flask, render_template, request, url_for, flash, redirect
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route('/', methods=('GET', 'POST'))
 def index():
+    if request.method == 'POST':
+        return redirect(url_for('register'))
+
     return render_template('index.html')
+
+
+@app.route('/basic', methods=('GET', 'POST'))
+def index_basic():
+    if request.method == 'POST':
+        return redirect(url_for('register'))
+
+    return render_template('index_basic.html')
 
 
 def html_head():
     html = ""
 
     html += '<head>'
-    html += '	<meta charset=utF-8">'
     html += '   <meta charset="utf-8">'
     html += '   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">'
     html += '   <link rel="stylesheet" href="static/css/style.css">'
