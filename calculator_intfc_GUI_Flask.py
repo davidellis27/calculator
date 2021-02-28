@@ -8,7 +8,7 @@ app = Flask(__name__)
 @app.route('/', methods=('GET', 'POST'))
 def index():
     if request.method == 'POST':
-        return redirect(url_for('register'))
+        return redirect(url_for('form_register'))
 
     return render_template('index.html')
 
@@ -16,7 +16,7 @@ def index():
 @app.route('/basic', methods=('GET', 'POST'))
 def index_basic():
     if request.method == 'POST':
-        return redirect(url_for('register'))
+        return redirect(url_for('form_register'))
 
     return render_template('index_basic.html')
 
@@ -27,7 +27,7 @@ def html_head():
     html += '<head>'
     html += '   <meta charset="utf-8">'
     html += '   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">'
-    html += '   <link rel="stylesheet" href="static/css/style.css">'
+#    html += '   <link rel="stylesheet" href="static/css/style.css">'
     html += '       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">'
     html += '	<title>Flask Test</title>'
     html += '</head>'
@@ -85,53 +85,41 @@ def html_form_insert(title, content):
     html = ""
 
     html += '<form method="post">'
+    html += '<table>'
+    html += '<tr>'
+    html += '<td>'
     html += '    <div class="form-group">'
-    html += '        <label for="title">Title</label>'
-    html += '        <input type="text" name="title"'
+    # html += '        <label for="first-number">First Number</label>'
+    html += '        <input type="text" name="first-number"'
     html += '               placeholder="Post title" class="form-control"'
     html += '               value="' + title + '"></input>'
     html += '    </div>'
+    html += '</td>'
 
+    html += '<td>'
+    # html += '<label for="operation">Choose an operation:</label>'
+    html += '<select name="operation" id="operation">'
+    html += '<option value="add">+</option>'
+    html += '<option value="sub">-</option>'
+    html += '<option value="mult">*</option>'
+    html += '<option value="div">/</option>'
+    html += '</select>'
+    html += '</td>'
+
+    html += '<td>'
     html += '    <div class="form-group">'
-    html += '        <label for="content">Content</label>'
-    html += '        <textarea name="content" placeholder="Post content"'
-    html += '                  class="form-control">' + content + '</textarea>'
+    # html += '        <label for="second_number">Second Number</label>'
+    html += '        <input type="text" name="second_number"'
+    html += '               placeholder="Post title" class="form-control"'
+    html += '               value="' + content + '"></input>'
     html += '    </div>'
+    html += '</td>'
+    html += '</table>'
+
     html += '    <div class="form-group">'
     html += '        <button type="submit" class="btn btn-primary">Submit</button>'
     html += '    </div>'
     html += '</form>'
-
-    return html
-
-
-def html_wrapper_row_start():
-    html = ""
-
-    html += '<div class="row">'
-
-    return html
-
-
-def html_wrapper_row_end():
-    html = ""
-
-    html += '</div>'
-
-    return html
-
-
-def html_sidebar_old():
-    html = ""
-
-    html += '<div class="col-1">'
-    html += '    <nav class ="navbar bg-light position-fixed">'
-    html += '    Title<br>'
-    html += '    Title<br>'
-    html += '    Title<br>'
-    html += '    Title<br>'
-    html += '    </nav>'
-    html += '</div>'
 
     return html
 
@@ -141,8 +129,6 @@ def html_sidebar():
 
     html += '<div class="col-1">'
     html += '    <nav class ="navbar bg-dark position-fixed">'
-    #    html += '        <p class -"navbar-text">Title</p>'
-    #    html += '<div class="container-fluid">'
     html += '            <table>'
     html += '            <tr><td>'
     html += '            <p>Hello World</p>'
@@ -166,15 +152,14 @@ def html_sidebar():
     html += '            </li>'
     html += '        </ul>'
     html += '            </table>'
-    #    html += '</div>'
     html += '    </nav>'
     html += '</div>'
 
     return html
 
 
-@app.route('/insert', methods=('GET', 'POST'))
-def form_insert():
+@app.route('/register', methods=('GET', 'POST'))
+def form_register():
     title = 'Start title'
     content = 'Start content'
 
@@ -187,17 +172,17 @@ def form_insert():
     html += '<html lang="en">'
     html += html_head()
     html += '<body>'
-    html += html_wrapper_row_start()
-    html += html_sidebar()
+#    html += '<div class="row">'
+#    html += html_sidebar()
     html += '   <div class="col-6">'
     html += '       <div class="container">'
-    html += '    	<h1>Welcome to Blah</h1>'
-    html += '           <p>' + title + '</p>'
-    html += '           <p>' + content + '</p>'
-    html += html_form_insert_1(title, content)
+    html += '    	<h1>Calculator</h1>'
+#    html += '           <p>' + title + '</p>'
+#    html += '           <p>' + content + '</p>'
+    html += html_form_insert(title, content)
     html += '       </div>'
-    html += '   </div>'
-    html += html_wrapper_row_end()
+    html += '    </div>'
+#    html += '</div>'
     html += html_jquery_popper_bootstrap()
     html += '</body>'
     html += '</html>'
