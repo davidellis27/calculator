@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
 
 from flask import Flask, render_template, request, url_for, flash, redirect
+from calculator_db_funcs_postgresql import db_postgresql_connect, db_postgresql_select, \
+     db_postgresql_update, db_postgresql_insert
+
 
 app = Flask(__name__)
+
+db_conn = db_postgresql_connect()
 
 
 @app.route('/', methods=('GET', 'POST'))
@@ -176,14 +181,55 @@ def html_sidebar():
     return html
 
 
+@app.route('/new_name', methods=('GET', 'POST'))
+def form_new_name():
+
+    if request.method == 'POST':
+        re_enter = request.form['re_enter']
+        go_on = request.form['go_on']
+
+    html = ""
+    html += '<!DOCTYPE html>'
+    html += '<html lang="en">'
+    html += html_head()
+    html += '<body>'
+    html += '   <div class="col-4">'
+    html += '       <div class="container">'
+    html += '    	<h1>Calculator</h1>'
+    html += html_form_new_name(name)
+    html += '       </div>'
+    html += '    </div>'
+    html += html_jquery_popper_bootstrap()
+    html += '</body>'
+    html += '</html>'
+
+    return html
+
+
 @app.route('/register', methods=('GET', 'POST'))
 def form_register():
-    name = 'Start title'
 
     if request.method == 'POST':
         name = request.form['register_name']
         print(name)
-        #check if name exists
+
+        the_sql = "SELECT addition, subtraction, multiplication, division FROM calculator WHERE user_name = '" + name + "';"
+        rows = db_postgresql_select(db_conn, the_sql)
+
+        if not rows:
+            print("I've not seen {} before".format(name))
+
+            return redirect(url_for('form_new_name'))
+
+        """
+            answer = prompt_single("Is that name correct? (y/n):", "yn")
+
+            if answer == 'y':
+                the_sql = "INSERT INTO calculator(user_name) " \
+                          "VALUES('" + name + "') " \
+                          "RETURNING addition, subtraction, multiplication, division"
+                rows = db_postgresql_insert(db_conn, the_sql)
+        """
 
     html = ""
     html += '<!DOCTYPE html>'
