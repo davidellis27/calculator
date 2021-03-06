@@ -81,6 +81,24 @@ def html_form_insert_1(title, content):
     return html
 
 
+def html_form_register():
+    html = ""
+
+    html += '<form method="post">'
+    html += '    <div class="form-group">'
+    html += '        <label for="register_name">Enter Name</label>'
+    html += '        <input type="text" name="register_name"'
+    html += '               placeholder="Name" class="form-control"'
+    html += '               value=""></input>'
+    html += '    </div>'
+    html += '    <div class="form-group">'
+    html += '        <button type="submit" class="btn btn-primary">Submit</button>'
+    html += '    </div>'
+    html += '</form>'
+
+    return html
+
+
 def html_form_insert(title, content):
     html = ""
 
@@ -160,6 +178,35 @@ def html_sidebar():
 
 @app.route('/register', methods=('GET', 'POST'))
 def form_register():
+    name = 'Start title'
+
+    if request.method == 'POST':
+        name = request.form['register_name']
+        print(name)
+
+    html = ""
+    html += '<!DOCTYPE html>'
+    html += '<html lang="en">'
+    html += html_head()
+    html += '<body>'
+    #    html += '<div class="row">'
+    #    html += html_sidebar()
+    html += '   <div class="col-4">'
+    html += '       <div class="container">'
+    html += '    	<h1>Calculator</h1>'
+    html += html_form_register()
+    html += '       </div>'
+    html += '    </div>'
+    #    html += '</div>'
+    html += html_jquery_popper_bootstrap()
+    html += '</body>'
+    html += '</html>'
+
+    return html
+
+
+@app.route('/equation', methods=('GET', 'POST'))
+def form_equation():
     title = 'Start title'
     content = 'Start content'
 
