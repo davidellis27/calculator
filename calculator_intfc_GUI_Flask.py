@@ -183,6 +183,7 @@ def form_register():
     if request.method == 'POST':
         name = request.form['register_name']
         print(name)
+        #check if name exists
 
     html = ""
     html += '<!DOCTYPE html>'
