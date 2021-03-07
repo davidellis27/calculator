@@ -181,12 +181,46 @@ def html_sidebar():
     return html
 
 
-@app.route('/new_name', methods=('GET', 'POST'))
-def form_new_name():
+def html_form_new_name(name):
+    html = ""
+
+    html += '<form method="post">'
+    html += '    <div class="form-group">'
+
+    html += '        <p>I\'ve not seen ' + name + ' before.</p>'
+    html += '        <p>You Can:</p>'
+
+    html += '<div class="row">'
+    html += '    <div class="form-group">'
+    html += '        <button type="submit" name="button_1" value="go_on" class="btn btn-primary">Continue</button>'
+    html += '    </div>'
+    html += '           <p> as "' + name + '"</p>'
+    html += '    </div>'
+
+    html += '<div class="row">'
+    html += '    <div class="form-group">'
+    html += '        <button type="submit" name="button_1" value="re_enter" class="btn btn-primary">Re-Enter</button>'
+    html += '    </div>'
+    html += '           <p>your name</p>'
+    html += '    </div>'
+
+    html += '    </div>'
+    html += '</form>'
+
+    return html
+
+
+@app.route('/new_name/<name>', methods=('GET', 'POST'))
+def form_new_name(name):
 
     if request.method == 'POST':
-        re_enter = request.form['re_enter']
-        go_on = request.form['go_on']
+        btn_return = request.form['button_1']
+
+        if btn_return == "re_enter":
+            return redirect(url_for('form_register'))
+
+        if btn_return == "go_on":
+            return redirect(url_for('form_equation'))
 
     html = ""
     html += '<!DOCTYPE html>'
@@ -219,7 +253,7 @@ def form_register():
         if not rows:
             print("I've not seen {} before".format(name))
 
-            return redirect(url_for('form_new_name'))
+            return redirect(url_for('form_new_name', name=name))
 
         """
             answer = prompt_single("Is that name correct? (y/n):", "yn")
