@@ -18,3 +18,10 @@ def divide(a, b):
         return Decimal(a) / Decimal(b)
     except ZeroDivisionError:
         return 0
+
+
+operations = {'+': add,
+              '-': subtract,
+              '*': multiply,
+              '/': divide,
+              }

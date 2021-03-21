@@ -1,12 +1,7 @@
 #!/usr/bin/env python3
 
-from calculator import add, subtract, multiply, divide
+from calculator import add, subtract, multiply, divide, operations
 
-operations = {'+': add,
-              '-': subtract,
-              '*': multiply,
-              '/': divide,
-              }
 
 number_1 = input(f'{"Enter first integer: ":>22}')
 operation = input(f'{"Enter operation: ":>22}')

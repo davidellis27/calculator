@@ -2,15 +2,9 @@
 
 import flask
 from flask import request, jsonify
-from calculator import add, subtract, multiply, divide
+from calculator import add, subtract, multiply, divide, operations
 from decimal import Decimal
 
-
-operations = {'+': add,
-              '-': subtract,
-              '*': multiply,
-              '/': divide,
-              }
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -55,4 +49,15 @@ def api_div():
     return jsonify(str(operations['/'](number_1, number_2)))
 
 
-app.run()
+@app.route('/calculator/v1/calculator_operation', methods=['GET'])
+def api_operation():
+    number_1 = Decimal(request.args['number_1'])
+    number_2 = Decimal(request.args['number_2'])
+    operation = request.args['operation']
+
+    # OR put a switch statement here and call the appropriate operation api
+
+    return jsonify(str(operations[operation](number_1, number_2)))
+
+
+app.run(host='localhost', port=5000, debug=True)

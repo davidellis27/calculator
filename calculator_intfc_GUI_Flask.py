@@ -3,6 +3,9 @@
 from flask import Flask, render_template, request, url_for, flash, redirect
 from calculator_db_funcs_postgresql import db_postgresql_connect, db_postgresql_select, \
      db_postgresql_update, db_postgresql_insert
+import requests
+import json
+import urllib.parse
 
 
 app = Flask(__name__)
@@ -140,7 +143,7 @@ def html_form_equation(name):
 
     html += '        <div class="form-group">'
     # html += '          <label for="first-number">First Number</label>'
-    html += '            <input type="text" name="first-number"'
+    html += '            <input type="text" name="first_number"'
     html += '                   placeholder="Post title" class="form-control"'
     html += '                   value="First Number"></input>'
     html += '        </div>'
@@ -150,10 +153,10 @@ def html_form_equation(name):
     html += '        <div>'
     # html += '          <label for="operation">Choose an operation:</label>'
     html += '            <select name="operation" id="operation" style="font-size: 24px">'
-    html += '                <option value="add">+</option>'
-    html += '                <option value="sub">-</option>'
-    html += '                <option value="mult">x</option>'
-    html += '                <option value="div">/</option>'
+    html += '                <option value="+">+</option>'
+    html += '                <option value="-">-</option>'
+    html += '                <option value="*">x</option>'
+    html += '                <option value="/">/</option>'
     html += '            </select>'
     html += '        </div>'
 
@@ -184,15 +187,31 @@ def html_form_equation(name):
 def form_equation(name):
 
     if request.method == 'POST':
-        title = request.form['title']
-        content = request.form['content']
+        number_1 = request.form['first_number']
+        number_2 = request.form['second_number']
+        operation = request.form['operation']
+
+        the_params = {}
+        for variable in ["number_1", "number_2", "operation"]:
+            the_params[variable] = eval(variable)
+
+        #urllib.parse.urlencode(the_params)
+
+        print('the params')
+        print(the_params)
+
+        endpoint = 'http://localhost:5000/calculator/v1/calculator_operation'
+        response = requests.get(url=endpoint, params=the_params)
+
+        print('the answer')
+        print(response.json())
 
     html = ""
     html += '<!DOCTYPE html>'
     html += '<html lang="en">'
     html += html_head()
     html += '<body>'
-    html += '   <div class="col-6">'
+    html += '   <div class="col-9">'
     html += '       <div class="container">'
     html += '    	<h1>Calculator</h1>'
     html += html_form_equation(name)
@@ -330,4 +349,4 @@ def form_register():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='localhost', port=5001, debug=True)
