@@ -4,6 +4,7 @@ from flask import Flask, render_template, request, url_for, flash, redirect
 from calculator_db_funcs_postgresql import db_postgresql_connect, db_postgresql_select, \
      db_postgresql_update, db_postgresql_insert
 import requests
+import statsmodels
 import json
 import urllib.parse
 
@@ -195,17 +196,19 @@ def form_equation(name):
         for variable in ["number_1", "number_2", "operation"]:
             the_params[variable] = eval(variable)
 
-        #urllib.parse.urlencode(the_params)
+        # urllib.parse.urlencode(the_params)
 
-        print('the params')
+        print('in form equation')
+        print(' the params')
         print(the_params)
 
         endpoint = 'http://localhost:5000/calculator/v1/calculator_operation'
         response = requests.get(url=endpoint, params=the_params)
 
-        print('the answer')
+        print(' the response')
         print(response.json())
 
+    # else it is GET
     html = ""
     html += '<!DOCTYPE html>'
     html += '<html lang="en">'
@@ -319,11 +322,27 @@ def form_register():
     if request.method == 'POST':
         name = request.form['register_name']
 
-        the_sql = "SELECT user_name, addition, subtraction, multiplication, division \
-                     FROM calculator \
-                    WHERE user_name = '" + name + "';"
+        # the_sql = "SELECT user_name, addition, subtraction, multiplication, division \
+        #              FROM calculator \
+        #             WHERE user_name = '" + name + "';"
 
-        rows = db_postgresql_select(db_conn, the_sql)
+        the_params = {'name': name}
+
+        # urllib.parse.urlencode(the_params)
+
+        print('In form_register')
+        print(' the params')
+        print(the_params)
+
+        endpoint = 'http://localhost:5000/calculator/v1/select_user_info'
+        response = requests.get(url=endpoint, params=the_params)
+
+        print(' the response')
+        print(response)
+        print(response.status_code)
+        print(response.json())
+
+        #BATT look at return code instead of rows below.  based on first parameter, go to new name or equation.
 
         if not rows:
             return redirect(url_for('form_new_name', name=name))

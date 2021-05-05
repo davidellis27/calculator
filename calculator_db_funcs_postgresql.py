@@ -29,6 +29,11 @@ def db_postgresql_connect():
     return conn
 
 
+def db_postgresql_close(db_conn):
+    if db_conn is not None:
+        db_conn.close()
+
+
 def db_postgresql_select(db_conn, the_select):
     cur = db_conn.cursor()
 
