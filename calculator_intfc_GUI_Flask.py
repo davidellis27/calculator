@@ -4,7 +4,6 @@ from flask import Flask, render_template, request, url_for, flash, redirect
 from calculator_db_funcs_postgresql import db_postgresql_connect, db_postgresql_select, \
      db_postgresql_update, db_postgresql_insert
 import requests
-import statsmodels
 import json
 import urllib.parse
 
